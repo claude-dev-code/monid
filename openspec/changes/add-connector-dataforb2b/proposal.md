@@ -39,8 +39,10 @@ header key, three synchronous JSON routes, and a per-response receipt
   provider consolidate claims `credits_used` and plucks it out of the output
   (D27): accounts on an earlier, lower card bill their own receipt and
   report `usage.mismatch.derived`.
-- 6 synthetic fixture chains (provider-level, two bound to
-  `{{request.url}}`) and 12 replay tests plus 3 gated live tests.
+- 6 provider-level fixture chains recorded live and hand-minimized (person
+  identities replaced, contact values set to placeholders; two bound to
+  `{{request.url}}`), 13 replay tests, and 3 live tests gated on
+  `DATAFORB2B_API_KEY`, green against the live API.
 
 ## Capabilities
 
@@ -58,5 +60,6 @@ header key, three synchronous JSON routes, and a per-response receipt
 
 New connector tree plus three ids in `connectors/ids.lock.json`. No new
 `Unit`, preset, hook, category or compiler change, and no engine bump.
-Fixtures carry the `synthetic-` prefix until recorded with
-`deno task record` against a provider key.
+Note for the fixture diet: the recorder's PII scrub let a US phone number
+in the `(206) 555-0100` form through; the committed chains were scrubbed by
+hand.

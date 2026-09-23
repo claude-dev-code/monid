@@ -29,7 +29,7 @@ const search = async (fixture: string, body: Json) =>
     });
 
 Deno.test("dataforb2b#search/companies: the credits_used receipt bills and leaves the payload; the card agrees", async () => {
-    const result = await search("synthetic-search-companies.json", {
+    const result = await search("search-companies.json", {
         filters: FILTERS,
         count: 2,
     });
@@ -45,7 +45,7 @@ Deno.test("dataforb2b#search/companies: the credits_used receipt bills and leave
 });
 
 Deno.test("dataforb2b#search/companies: an empty search settles zero", async () => {
-    const result = await search("synthetic-search-empty.json", {
+    const result = await search("search-empty.json", {
         filters: FILTERS,
         count: 25,
     });

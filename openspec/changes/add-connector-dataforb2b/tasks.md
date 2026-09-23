@@ -28,8 +28,8 @@
 
 ## 4. Verification
 
-- [x] 4.1 6 synthetic provider-level fixture chains, 12 replay tests, 3 live
-      tests gated on `DATAFORB2B_API_KEY`
+- [x] 4.1 6 provider-level chains recorded live (`deno task record`) and
+      hand-minimized, 13 replay tests, 3 live tests gated on
+      `DATAFORB2B_API_KEY` (green live, 2026-09-23)
 - [x] 4.2 `deno task check && deno task test` green with no network
 - [x] 4.3 Three ids added to `connectors/ids.lock.json`
-- [ ] 4.4 Replace the synthetic fixtures with `deno task record` recordings

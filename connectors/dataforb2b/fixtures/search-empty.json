@@ -1,6 +1,6 @@
 {
-    "name": "synthetic-search-empty",
-    "description": "A valid search that matches nothing: 200, no results, receipt 0. Serves both searches via {{request.url}}. Synthetic, shaped on the search response model (2026-09-23).",
+    "name": "search-empty",
+    "description": "A valid search that matches nothing: 200, no results, receipt 0. Serves both searches via {{request.url}}. Recorded live on /search/companies 2026-09-23.",
     "calls": [
         {
             "req": {
@@ -15,7 +15,8 @@
                     "count": 0,
                     "has_next_page": false,
                     "credits_used": 0,
-                    "results": []
+                    "results": [],
+                    "_debug": null
                 }
             }
         }

@@ -1,6 +1,6 @@
 {
-    "name": "synthetic-insufficient-credits",
-    "description": "The balance does not cover the worst case of the request: 402 with the object detail every endpoint can answer with. Vendor non-2xx is DATA, settled at zero. Synthetic, shaped on the credit pre-check (2026-09-23).",
+    "name": "insufficient-credits",
+    "description": "The balance does not cover the worst case of the request (count x rate, checked before the call): 402 with the object detail every endpoint can answer with. Recorded live on /search/people 2026-09-23.",
     "calls": [
         {
             "req": {
@@ -12,8 +12,8 @@
                 "body": {
                     "detail": {
                         "error": "Insufficient credits",
-                        "available_credits": 4,
-                        "required_credits": 37.5,
+                        "available_credits": 997,
+                        "required_credits": 1500,
                         "cost_per_result": 1.5
                     }
                 }

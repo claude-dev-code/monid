@@ -21,8 +21,8 @@ const enrich = async (fixture: string, body: Json) =>
         fixture: await loadFixture(`${chains}${fixture}`),
     });
 
-Deno.test("dataforb2b#enrich/profile: only the items found are billed, per the receipt", async () => {
-    const result = await enrich("synthetic-enrich-profile.json", {
+Deno.test("dataforb2b#enrich/profile: every requested item found, the receipt and the card agree", async () => {
+    const result = await enrich("enrich-profile.json", {
         profile_identifier: PROFILE,
         enrich_profile: true,
         enrich_work_email: true,
@@ -31,19 +31,49 @@ Deno.test("dataforb2b#enrich/profile: only the items found are billed, per the r
     });
     assertEquals(result.httpStatus, 200);
     assertEquals(result.isProviderError, false);
-    // requested 15.5 at the card; found profile + work email = 2.5
+    // 1.5 + 1 + 3 + 10
+    assertEquals(result.usage, {
+        credits: { default: 15.5 },
+        evidence: { profile: 1, work_email: 1, personal_email: 1, phone: 1 },
+    });
+    const output = result.output as Record<string, unknown>;
+    assertEquals("credits_used" in output, false);
+    assertEquals(output.git_profile, null);
+});
+
+Deno.test("dataforb2b#enrich/profile: misses are not counted", async () => {
+    // same exchange with the phone and personal email not found: the
+    // evidence drops those lines (the receipt, when present, still bills)
+    const fixture = await loadFixture(`${chains}enrich-profile.json`);
+    const res = fixture.calls[0].res as { body: Record<string, Json> };
+    res.body = {
+        ...res.body,
+        personal_email: null,
+        phone: null,
+        credits_used: 2.5,
+    };
+    const result = await runEndpoint({
+        unit: await testSealedUnit(ID),
+        input: {
+            body: {
+                profile_identifier: PROFILE,
+                enrich_profile: true,
+                enrich_work_email: true,
+                enrich_personal_email: true,
+                enrich_phone: true,
+            },
+        },
+        mode: "replay",
+        fixture,
+    });
     assertEquals(result.usage, {
         credits: { default: 2.5 },
         evidence: { profile: 1, work_email: 1 },
     });
-    const output = result.output as Record<string, unknown>;
-    assertEquals("credits_used" in output, false);
-    assertEquals(output.work_email, "sarah.martinez@northwind.example");
-    assertEquals(output.phone, null);
 });
 
 Deno.test("dataforb2b#enrich/profile: 404 is data, zero usage", async () => {
-    const result = await enrich("synthetic-enrich-not-found.json", {
+    const result = await enrich("enrich-not-found.json", {
         profile_identifier: "no-such-person",
         enrich_profile: true,
     });
@@ -79,7 +109,7 @@ Deno.test("dataforb2b#enrich/profile: estimate sums the requested items at the c
 Deno.test("dataforb2b#enrich/profile: at least one enrich_* flag must be true", async () => {
     const unit = await testSealedUnit(ID);
     const fixture = await loadFixture(
-        `${chains}synthetic-enrich-profile.json`,
+        `${chains}enrich-profile.json`,
     );
     const rejected: Json[] = [
         { profile_identifier: PROFILE },

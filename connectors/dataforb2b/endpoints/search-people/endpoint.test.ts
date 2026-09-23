@@ -28,7 +28,7 @@ const search = async (fixture: string, body: Json) =>
     });
 
 Deno.test("dataforb2b#search/people: the credits_used receipt bills and leaves the payload; the card agrees", async () => {
-    const result = await search("synthetic-search-people.json", {
+    const result = await search("search-people.json", {
         filters: FILTERS,
         count: 2,
     });
@@ -40,12 +40,12 @@ Deno.test("dataforb2b#search/people: the credits_used receipt bills and leaves t
     });
     const output = result.output as Record<string, unknown>;
     assertEquals("credits_used" in output, false);
-    assertEquals(output.total, 1840);
+    assertEquals(output.total, 10000);
     assertEquals((output.results as unknown[]).length, 2);
 });
 
 Deno.test("dataforb2b#search/people: an empty search settles zero", async () => {
-    const result = await search("synthetic-search-empty.json", {
+    const result = await search("search-empty.json", {
         filters: FILTERS,
         count: 25,
     });
@@ -55,7 +55,7 @@ Deno.test("dataforb2b#search/people: an empty search settles zero", async () => 
 });
 
 Deno.test("dataforb2b#search/people: 402 is data, zero usage", async () => {
-    const result = await search("synthetic-insufficient-credits.json", {
+    const result = await search("insufficient-credits.json", {
         filters: FILTERS,
         count: 25,
     });
@@ -78,7 +78,7 @@ Deno.test("dataforb2b#search/people: estimate is count × the live or indexed ra
 
 Deno.test("dataforb2b#search/people: count is required and bounded; filter grammar is enforced", async () => {
     const unit = await testSealedUnit(ID);
-    const fixture = await loadFixture(`${chains}synthetic-search-people.json`);
+    const fixture = await loadFixture(`${chains}search-people.json`);
     const rejected: Json[] = [
         { filters: FILTERS },
         { filters: FILTERS, count: 0 },
