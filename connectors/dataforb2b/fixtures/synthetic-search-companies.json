@@ -1,0 +1,70 @@
+{
+    "name": "synthetic-search-companies",
+    "description": "A company search returning two indexed companies with its receipt: credits_used 1.5 (2 results at 0.75, enrich_live false, card of accounts created from 2026-05-07). Synthetic, shaped on the documented response of POST /search/companies (2026-09-23); replace via `deno task record`.",
+    "calls": [
+        {
+            "req": {
+                "method": "POST",
+                "url": "https://api.dataforb2b.ai/search/companies"
+            },
+            "res": {
+                "status": 200,
+                "body": {
+                    "total": 312,
+                    "offset": 0,
+                    "count": 2,
+                    "has_next_page": true,
+                    "credits_used": 1.5,
+                    "results": [
+                        {
+                            "id": "org_ABC123xyz",
+                            "name": "Northwind Cloud",
+                            "industry": "software development",
+                            "headquarters": {
+                                "country": "FR",
+                                "city": "Paris",
+                                "region": "Île-de-France"
+                            },
+                            "founded_year": 2015,
+                            "company_type": "PRIVATELY_HELD",
+                            "links": { "website": "https://northwind.example" },
+                            "size": {
+                                "employees": 120,
+                                "range_min": 51,
+                                "range_max": 200
+                            },
+                            "funding": {
+                                "last_round_amount_usd": 12000000,
+                                "last_round_date": "2025-06-15"
+                            },
+                            "growth": { "percent_6m": 18.5, "recent_hires": 9 }
+                        },
+                        {
+                            "id": "org_DEF456abc",
+                            "name": "Contoso Data",
+                            "industry": "software development",
+                            "headquarters": {
+                                "country": "FR",
+                                "city": "Lyon",
+                                "region": "Auvergne-Rhône-Alpes"
+                            },
+                            "founded_year": 2019,
+                            "company_type": "PRIVATELY_HELD",
+                            "links": { "website": "https://contoso.example" },
+                            "size": {
+                                "employees": 64,
+                                "range_min": 51,
+                                "range_max": 200
+                            },
+                            "funding": {
+                                "last_round_amount_usd": 4000000,
+                                "last_round_date": "2024-11-02"
+                            },
+                            "growth": { "percent_6m": 25.0, "recent_hires": 6 }
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}
